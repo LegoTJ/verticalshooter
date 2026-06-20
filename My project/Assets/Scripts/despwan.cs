@@ -59,7 +59,9 @@ public class despwan : MonoBehaviour
         Collider2D[] colliderse = Physics2D.OverlapBoxAll(boxCollider.bounds.center, boxCollider.bounds.size, 0f, LayerMask.GetMask("explode"));
         foreach (Collider2D collider in colliders)
         {
-            if (collider.CompareTag("Enemy"))
+            // Persistent enemies (e.g. Galaga-style planes) manage their own
+            // lifetime and must not be wiped by the area clearer.
+            if (collider.CompareTag("Enemy") && collider.GetComponentInParent<EnemyPlaneMovement>() == null)
             {
                 collider.gameObject.SetActive(false);
             }
